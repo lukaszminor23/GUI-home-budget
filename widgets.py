@@ -54,4 +54,4 @@ class AddButton(ttk.Frame):
         cursor = self.conn.cursor()
         cursor.execute(sql, (str(self.category), float(str(self.amount)), str(self.date)))
         self.conn.commit()
-        messagebox.showinfo(None, 'Wydatek został dodany')
+        messagebox.showinfo(None, 'Item has been added to the database')

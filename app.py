@@ -8,8 +8,8 @@ class App(tk.Tk):
         super().__init__()
         self.conn = connection
         self.title('Home budget')
-        self.geometry('500x300')
-        self.minsize(500, 300)
+        self.geometry('450x230')
+        self.minsize(450, 250)
         self.resizable(False, False)
 
         entry1 = Entries(self, 'Category:')
@@ -18,7 +18,7 @@ class App(tk.Tk):
 
         AddButton(self,
                   self.conn,
-                  'Button 1',
+                  'Add item',
                   entry1,
                   entry2,
                   entry3)
