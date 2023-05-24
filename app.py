@@ -1,24 +1,28 @@
 import tkinter as tk
-from widgets import Entries, Buttons
+
+from widgets import Entries, AddButton
 
 
 class App(tk.Tk):
-    def __init__(self):
+    def __init__(self, connection):
         super().__init__()
-
+        self.conn = connection
         self.title('Home budget')
         self.geometry('500x300')
         self.minsize(500, 300)
+        self.resizable(False, False)
 
-        Entries(self, 'Category:')
-        Entries(self, 'Amount:')
-        Entries(self, 'Date:')
+        entry1 = Entries(self, 'Category:')
+        entry2 = Entries(self, 'Amount:')
+        entry3 = Entries(self, 'Date:')
 
-        Buttons(self, 'Button 1')
-        Buttons(self, 'Button 2')
-        Buttons(self, 'Button 3')
+        AddButton(self,
+                  self.conn,
+                  'Button 1',
+                  entry1,
+                  entry2,
+                  entry3)
+        # Buttons(self, 'Button 2')
+        # Buttons(self, 'Button 3')
 
         self.mainloop()
-
-
-App()
