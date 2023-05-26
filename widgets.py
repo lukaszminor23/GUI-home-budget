@@ -2,6 +2,8 @@ from tkinter import ttk
 import tkinter as tk
 from tkinter import messagebox
 
+import matplotlib.pyplot as plt
+
 
 class Entries(ttk.Frame):
     def __init__(self, parent, label_name):
@@ -39,8 +41,7 @@ class AddButton(ttk.Frame):
         self.button_name = button_name
         self.conn = connection
 
-        ttk.Button(self, text=self.button_name,
-                   command=lambda: self.add_item()).pack(
+        ttk.Button(self, text=self.button_name, command=lambda: self.add_item()).pack(
             fill='both',
             expand=True,
             pady=3,
@@ -55,3 +56,51 @@ class AddButton(ttk.Frame):
         cursor.execute(sql, (str(self.category), float(str(self.amount)), str(self.date)))
         self.conn.commit()
         messagebox.showinfo(None, 'Item has been added to the database')
+
+
+class PlotButton(ttk.Frame):
+    def __init__(self, parent, connection, button_name):
+        super().__init__(master=parent)
+        self.button_name = button_name
+        self.conn = connection
+
+        ttk.Button(self, text=self.button_name, command=lambda: self.create_plot()).pack(
+            fill='both',
+            expand=True,
+            pady=3,
+            padx=3,
+            ipady=20)
+
+        self.pack(side='left', expand=True, fill='both')
+
+    def create_plot(self):
+        plot_dict = {}
+        sql = '''SELECT category, amount FROM expenses'''
+        cursor = self.conn.cursor()
+        for record in cursor.execute(sql):
+            plot_dict[record[0]] = plot_dict.get(record[0], 0) + record[1]
+
+        plt.bar(plot_dict.keys(), plot_dict.values())
+        plt.show()
+
+
+class ListButton(ttk.Frame):
+    def __init__(self, parent, connection, button_name):
+        super().__init__(master=parent)
+        self.button_name = button_name
+        self.conn = connection
+
+        ttk.Button(self, text=self.button_name, command=lambda: self.list_items()).pack(
+            fill='both',
+            expand=True,
+            pady=3,
+            padx=3,
+            ipady=20)
+
+        self.pack(side='left', expand=True, fill='both')
+
+    def list_items(self):
+        sql = '''SELECT * FROM expenses'''
+        cursor = self.conn.cursor()
+        for record in cursor.execute(sql):
+            print(record)
