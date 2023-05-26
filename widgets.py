@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 import matplotlib.pyplot as plt
+from matplotlib import style
 
 
 class Entries(ttk.Frame):
@@ -19,7 +20,7 @@ class Entries(ttk.Frame):
             sticky='nsew',
             pady=5,
             padx=5)
-        ttk.Entry(self, font=('Helvetica', 22), textvariable=self.entry_text).grid(
+        ttk.Entry(self, font=('Helvetica', 15), textvariable=self.entry_text).grid(
             row=0,
             column=1,
             sticky='nsew',
@@ -33,12 +34,13 @@ class Entries(ttk.Frame):
 
 
 class Buttons(ttk.Frame):
-    def __init__(self, parent, connection, category, amount, date):
+    def __init__(self, parent, connection, table, category, amount, date):
         super().__init__(master=parent)
         self.conn = connection
         self.category = category
         self.amount = amount
         self.date = date
+        self.table = table
 
         self.columnconfigure(0, weight=1, uniform='a')
         self.columnconfigure(1, weight=1, uniform='a')
@@ -53,7 +55,7 @@ class Buttons(ttk.Frame):
             padx=3,
             ipady=20)
 
-        ttk.Button(self, text='List items', command=lambda: self.list_items()).grid(
+        ttk.Button(self, text='List items', command=lambda: self.list_items(self.conn, self.table)).grid(
             row=0,
             column=1,
             sticky='snew',
@@ -85,11 +87,36 @@ class Buttons(ttk.Frame):
         for record in cursor.execute(sql):
             plot_dict[record[0]] = plot_dict.get(record[0], 0) + record[1]
 
+        style.use('fivethirtyeight')
         plt.bar(plot_dict.keys(), plot_dict.values())
+        plt.title('Amount of money spent by category')
+        plt.xlabel('Categories')
+        plt.ylabel('Amount')
         plt.show()
 
-    def list_items(self):
-        sql = '''SELECT * FROM expenses'''
-        cursor = self.conn.cursor()
-        for record in cursor.execute(sql):
-            print(record)
+    def list_items(self, conn, table):
+        cursor = conn.cursor()
+        cursor.execute('''SELECT * FROM expenses''')
+        records = cursor.fetchall()
+
+        counter = 0
+        for record in records:
+            id = record[0]
+            category = record[1]
+            amount = record[2]
+            date = record[3]
+            data = (id, category, amount, date)
+            table.insert(parent='', index=counter, values=data)
+            counter += 1
+
+
+def create_table(table):
+    table.heading('id', text='id')
+    table.heading('category', text='Category')
+    table.heading('amount', text='Amount')
+    table.heading('date', text='Date')
+    table.column('id', width=100)
+    table.column('category', width=100)
+    table.column('amount', width=100)
+    table.column('date', width=100)
+    table.pack(fill='both')
