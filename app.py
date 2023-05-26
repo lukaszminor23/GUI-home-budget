@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from widgets import Entries, AddButton, PlotButton, ListButton
+from widgets import Entries, Buttons
 
 
 class App(tk.Tk):
@@ -15,8 +15,6 @@ class App(tk.Tk):
         entry2 = Entries(self, 'Amount:')
         entry3 = Entries(self, 'Date:')
 
-        AddButton(self, self.conn, 'Add item', entry1, entry2, entry3)
-        ListButton(self, self.conn, 'List items')
-        PlotButton(self, self.conn, 'Show chart')
+        Buttons(self, self.conn, entry1, entry2, entry3)
 
         self.mainloop()

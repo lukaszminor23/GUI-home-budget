@@ -1,35 +1,6 @@
 from tkinter import ttk
-import tkinter as tk
 from tkinter import messagebox
-
 import matplotlib.pyplot as plt
-
-
-class Entries(ttk.Frame):
-    def __init__(self, parent, label_name):
-        super().__init__(master=parent)
-        self.columnconfigure(0, weight=1, uniform='a')
-        self.columnconfigure(1, weight=3, uniform='a')
-        self.rowconfigure(0, weight=1)
-        self.entry_text = tk.StringVar()
-
-        ttk.Label(self, text=label_name, font='Helvetica').grid(
-            row=0,
-            column=0,
-            sticky='nsew',
-            pady=5,
-            padx=5)
-        ttk.Entry(self, font=('Helvetica', 22), textvariable=self.entry_text).grid(
-            row=0,
-            column=1,
-            sticky='nsew',
-            pady=5,
-            padx=5)
-
-        self.pack(expand=True, fill='both')
-
-    def __str__(self):
-        return self.entry_text.get()
 
 
 class Buttons(ttk.Frame):
