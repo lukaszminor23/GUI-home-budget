@@ -1,7 +1,6 @@
 import tkinter as tk
 
 from widgets import Entries, AddButton, PlotButton, ListButton
-from utils import create_plot, list_items
 
 
 class App(tk.Tk):
