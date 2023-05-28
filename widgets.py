@@ -98,16 +98,16 @@ class Buttons(ttk.Frame):
         cursor = conn.cursor()
         cursor.execute('''SELECT * FROM expenses''')
         records = cursor.fetchall()
+        for item in table.get_children():
+            table.delete(item)
 
-        counter = 0
         for record in records:
             id = record[0]
             category = record[1]
             amount = record[2]
             date = record[3]
             data = (id, category, amount, date)
-            table.insert(parent='', index=counter, values=data)
-            counter += 1
+            table.insert(parent='', index=tk.END, values=data)
 
 
 def create_table(table):
